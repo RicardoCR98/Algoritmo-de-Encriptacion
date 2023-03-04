@@ -56,7 +56,7 @@ namespace Proyecto2EDA_AlgoritmoEncriptacion
         {
             leerCampos();
             Decrypt descifrar = new Decrypt(cadenaEncrypt,clave);
-            //txt_Leer.Text = descifrar.cadenaDecrypr(clave);
+            txt_Leer.Text = descifrar.cadenaOriginal(clave);
             MessageBox.Show("Archivo desencriptado con éxito");
         }
     }

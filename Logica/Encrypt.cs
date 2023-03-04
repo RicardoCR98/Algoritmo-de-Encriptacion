@@ -91,8 +91,11 @@ namespace Proyecto2EDA_AlgoritmoEncriptacion.Logica
             {
                 for (int j = 0; j < copyDataMatriz.GetLength(1); j++)
                 {
-                    copyDataMatriz[i, j] = ((copyDataMatriz[i, j] * x ) % 33) +96;
-
+                    copyDataMatriz[i, j] = ((copyDataMatriz[i, j] * x) % 33) + 96;
+                                                            //121 - 96 = 25     -> 25 mod8 = 1      -> 1 +96 = 97
+                                                            //103 - 96 = 7      -> 7 mod 8 = 7      -> 7 + 96 = 103
+                                                            //120 - 96 = 30     -> 30 mod 8 = 6
+                                                            //donde 8 es el inverso modular de x%33
                 }
             }
 
@@ -117,11 +120,11 @@ namespace Proyecto2EDA_AlgoritmoEncriptacion.Logica
         {
             //Pasamos el arreglo de bytes a una matriz
             dataMatriz = matrizVignere(this.data);
-            keyMatriz =  matrizVignere(this.key);
+            keyMatriz = matrizVignere(this.key);
 
             //Ahora lo que queremos hacer es hallar el valor absoluto del determinante de la matriz de key
             int absDetMatrz = Math.Abs(DeterminanteGauss(keyMatriz));
-            int alfa =absDetMatrz + clave.Length;
+            int alfa = absDetMatrz + clave.Length;
             Console.WriteLine(alfa);
             return Math.Abs(alfa);
         }

@@ -18,9 +18,9 @@ namespace Proyecto2EDA_AlgoritmoEncriptacion.Logica
             this.dataEncrypt = Encoding.ASCII.GetBytes(msgEncrypt);
             this.key = Encoding.ASCII.GetBytes(clave);
             Console.WriteLine("\n");
-            dataMatriz = byteToMrtz(dataEncrypt,clave);
+            
             Console.WriteLine("\n");
-            cadenaOriginal(clave);
+
         }
 
         public string cadenaOriginal(string clave)
@@ -31,10 +31,11 @@ namespace Proyecto2EDA_AlgoritmoEncriptacion.Logica
 
             for (int i = 0; i < decryptedArray.Length; i++)
             {
-                decryptedChars[i] = Convert.ToChar((decryptedArray[i] % 33) + 96);
+                decryptedChars[i] = Convert.ToChar(decryptedArray[i] + 1+96);
             }
 
             string decryptedString = new string(decryptedChars);
+
             Console.WriteLine("Mensaje desencriptado: " + decryptedString);
             return decryptedString;
         }
@@ -42,29 +43,34 @@ namespace Proyecto2EDA_AlgoritmoEncriptacion.Logica
         //desencriptar el ascii en la función resMatrizAscii
         public int[,] resMatrizAscii(string clave)
         {
+            dataMatriz = byteToMrtz(dataEncrypt, clave);
             int x = alfaEncrypt(clave);
             int[,] copyDataMatriz = (int[,])dataMatriz.Clone();
 
-            // Calcular el módulo inverso de x
-            //int modInv = 0;
-            //for (int i = 1; i < 33; i++)
-            //{
-            //    if (((x % 33) * (i % 33)) % 33 == 1)
-            //    {
-            //        modInv = i;
-            //        break;
-            //    }
-            //}
-            // Multiplicar la matriz por el módulo inverso de x
+
             for (int i = 0; i < copyDataMatriz.GetLength(0); i++)
             {
                 for (int j = 0; j < copyDataMatriz.GetLength(1); j++)
                 {
-                    //copyDataMatriz[i, j] = (((copyDataMatriz[i, j] - 96+33) * modInv) % 33);
-                    copyDataMatriz[i, j] = ((copyDataMatriz[i, j] - 1) * InversoModular(x,33) + 33)%33;
+                    //PROBLEMA PARA REGRESAR LOS NUMBERS ASCII A TEXT ORIGINAL
+
+                    // Calcular el módulo inverso de x
+                    //int modInv = 0;
+                    //for (int i = 1; i < 33; i++)
+                    //{
+                    //    if (((x % 33) * (i % 33)) % 33 == 1)
+                    //    {
+                    //        modInv = i;
+                    //        break;
+                    //    }
+                    //}
+
+                    //copyDataMatriz[i, j] = ((copyDataMatriz[i, j] * x) % 33) + 96;
+                    //* InversoModular(x, 33)
+                    copyDataMatriz[i, j] = ((copyDataMatriz[i, j]-96));
                 }
             }
-        Console.WriteLine("Matriz de valores entre 0 y 32 bytes\n");
+            Console.WriteLine("Matriz de valores entre 0 y 32 bytes\n");
             // Imprimir la matriz resultante
             for (int i = 0; i < copyDataMatriz.GetLength(0); i++)
             {
@@ -103,7 +109,7 @@ namespace Proyecto2EDA_AlgoritmoEncriptacion.Logica
             return x1;
         }
 
-        public int[,] byteToMrtz(byte[] bytePrueba,string clave)
+        public int[,] byteToMrtz(byte[] bytePrueba, string clave)
         {
             int size = (int)Math.Sqrt(bytePrueba.Length);
             int[,] matriz = new int[size, size];
@@ -146,6 +152,7 @@ namespace Proyecto2EDA_AlgoritmoEncriptacion.Logica
             int alfa = absDetMatrz + clave.Length;
             return Math.Abs(alfa);
         }
+
         public static int DeterminanteGauss1(int[,] matriz)
         {
             int n = matriz.GetLength(0);

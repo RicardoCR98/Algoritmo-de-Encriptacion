@@ -31,6 +31,9 @@
             this.panel1 = new System.Windows.Forms.Panel();
             this.label1 = new System.Windows.Forms.Label();
             this.panel2 = new System.Windows.Forms.Panel();
+            this.btn_limpiar = new FontAwesome.Sharp.IconButton();
+            this.btn_AbrirEncriptado = new FontAwesome.Sharp.IconButton();
+            this.btn_Guardar = new FontAwesome.Sharp.IconButton();
             this.btn_Decrypt = new FontAwesome.Sharp.IconButton();
             this.txt_Encriptado = new System.Windows.Forms.TextBox();
             this.label3 = new System.Windows.Forms.Label();
@@ -67,6 +70,9 @@
             // 
             // panel2
             // 
+            this.panel2.Controls.Add(this.btn_limpiar);
+            this.panel2.Controls.Add(this.btn_AbrirEncriptado);
+            this.panel2.Controls.Add(this.btn_Guardar);
             this.panel2.Controls.Add(this.btn_Decrypt);
             this.panel2.Controls.Add(this.txt_Encriptado);
             this.panel2.Controls.Add(this.label3);
@@ -81,6 +87,60 @@
             this.panel2.Name = "panel2";
             this.panel2.Size = new System.Drawing.Size(874, 446);
             this.panel2.TabIndex = 1;
+            // 
+            // btn_limpiar
+            // 
+            this.btn_limpiar.Font = new System.Drawing.Font("Poppins", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.btn_limpiar.IconChar = FontAwesome.Sharp.IconChar.Broom;
+            this.btn_limpiar.IconColor = System.Drawing.Color.Black;
+            this.btn_limpiar.IconFont = FontAwesome.Sharp.IconFont.Auto;
+            this.btn_limpiar.IconSize = 24;
+            this.btn_limpiar.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.btn_limpiar.Location = new System.Drawing.Point(721, 327);
+            this.btn_limpiar.Name = "btn_limpiar";
+            this.btn_limpiar.Size = new System.Drawing.Size(141, 33);
+            this.btn_limpiar.TabIndex = 11;
+            this.btn_limpiar.Text = "Limpiar";
+            this.btn_limpiar.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.btn_limpiar.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
+            this.btn_limpiar.UseVisualStyleBackColor = true;
+            this.btn_limpiar.Click += new System.EventHandler(this.btn_limpiar_Click);
+            // 
+            // btn_AbrirEncriptado
+            // 
+            this.btn_AbrirEncriptado.Font = new System.Drawing.Font("Poppins", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.btn_AbrirEncriptado.IconChar = FontAwesome.Sharp.IconChar.FolderOpen;
+            this.btn_AbrirEncriptado.IconColor = System.Drawing.Color.Black;
+            this.btn_AbrirEncriptado.IconFont = FontAwesome.Sharp.IconFont.Auto;
+            this.btn_AbrirEncriptado.IconSize = 25;
+            this.btn_AbrirEncriptado.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.btn_AbrirEncriptado.Location = new System.Drawing.Point(436, 379);
+            this.btn_AbrirEncriptado.Name = "btn_AbrirEncriptado";
+            this.btn_AbrirEncriptado.Size = new System.Drawing.Size(219, 35);
+            this.btn_AbrirEncriptado.TabIndex = 10;
+            this.btn_AbrirEncriptado.Text = "Abrir archivo Encriptado";
+            this.btn_AbrirEncriptado.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.btn_AbrirEncriptado.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
+            this.btn_AbrirEncriptado.UseVisualStyleBackColor = true;
+            this.btn_AbrirEncriptado.Click += new System.EventHandler(this.btn_AbrirEncriptado_Click);
+            // 
+            // btn_Guardar
+            // 
+            this.btn_Guardar.Font = new System.Drawing.Font("Poppins", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.btn_Guardar.IconChar = FontAwesome.Sharp.IconChar.Download;
+            this.btn_Guardar.IconColor = System.Drawing.Color.Black;
+            this.btn_Guardar.IconFont = FontAwesome.Sharp.IconFont.Auto;
+            this.btn_Guardar.IconSize = 24;
+            this.btn_Guardar.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.btn_Guardar.Location = new System.Drawing.Point(721, 269);
+            this.btn_Guardar.Name = "btn_Guardar";
+            this.btn_Guardar.Size = new System.Drawing.Size(141, 33);
+            this.btn_Guardar.TabIndex = 9;
+            this.btn_Guardar.Text = "Salvar";
+            this.btn_Guardar.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.btn_Guardar.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
+            this.btn_Guardar.UseVisualStyleBackColor = true;
+            this.btn_Guardar.Click += new System.EventHandler(this.btn_Guardar_Click);
             // 
             // btn_Decrypt
             // 
@@ -175,11 +235,11 @@
             this.btn_Abrir.IconFont = FontAwesome.Sharp.IconFont.Auto;
             this.btn_Abrir.IconSize = 25;
             this.btn_Abrir.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.btn_Abrir.Location = new System.Drawing.Point(576, 13);
+            this.btn_Abrir.Location = new System.Drawing.Point(77, 379);
             this.btn_Abrir.Name = "btn_Abrir";
-            this.btn_Abrir.Size = new System.Drawing.Size(125, 35);
+            this.btn_Abrir.Size = new System.Drawing.Size(208, 35);
             this.btn_Abrir.TabIndex = 1;
-            this.btn_Abrir.Text = "Abrir";
+            this.btn_Abrir.Text = "Abrir archivo en Claro";
             this.btn_Abrir.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.btn_Abrir.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
             this.btn_Abrir.UseVisualStyleBackColor = true;
@@ -189,11 +249,11 @@
             // 
             this.label2.AutoSize = true;
             this.label2.Font = new System.Drawing.Font("Poppins", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.label2.Location = new System.Drawing.Point(16, 17);
+            this.label2.Location = new System.Drawing.Point(45, 17);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(163, 26);
+            this.label2.Size = new System.Drawing.Size(134, 26);
             this.label2.TabIndex = 0;
-            this.label2.Text = "Selecione el archivo";
+            this.label2.Text = "Ruta del archivo";
             // 
             // openFileDialog1
             // 
@@ -237,5 +297,8 @@
         private TextBox txt_Clave;
         private TextBox txt_Encriptado;
         private FontAwesome.Sharp.IconButton btn_Decrypt;
+        private FontAwesome.Sharp.IconButton btn_Guardar;
+        private FontAwesome.Sharp.IconButton btn_limpiar;
+        private FontAwesome.Sharp.IconButton btn_AbrirEncriptado;
     }
 }

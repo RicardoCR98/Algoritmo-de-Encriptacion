@@ -13,75 +13,26 @@ namespace Proyecto2EDA_AlgoritmoEncriptacion.Logica
         byte[] key;
         int[,] dataMatriz;
         int[,] keyMatriz;
-        public Encrypt(string mensaje, string clave) 
+        public Encrypt(string mensaje, string clave)
         {
             Console.WriteLine("ENCRIPTANDO");
-            this.data = Encoding.ASCII.GetBytes(mensaje);
-            this.key= Encoding.ASCII.GetBytes(clave);
+            this.data = Encoding.Unicode.GetBytes(mensaje);
+            this.key = Encoding.UTF8.GetBytes(clave);
         }
-        //METODO 1
+
+       // METODO 2
         public string cadenaEncryp(string clave)
         {
-            string matrizStr = "";
-            int[,] aux = resMatrizAscii(clave);
+            int[,] aux = resMatrizUTF(clave);
+            int[] matrizUnidimensional = Enumerable.Range(0, aux.GetLength(0))
+                            .SelectMany(i => Enumerable.Range(0, aux.GetLength(1)).Select(j => aux[i, j]))
+                            .ToArray();
+            string valoresSeparados = string.Join("", matrizUnidimensional.Select(x => ((char)x).ToString()).ToArray());
+            Console.WriteLine(valoresSeparados);
 
-            for (int i = 0; i < aux.GetLength(0); i++)
-            {
-                for (int j = 0; j < aux.GetLength(1); j++)
-                {
-                    char caracter = Convert.ToChar(aux[i, j]);
-                    matrizStr += caracter;
-                }
-            }
-
-            return matrizStr;
+            return valoresSeparados;
         }
-
-        //METODO 2
-        //public string cadenaEncryp(string clave)
-        //{
-        //    int[,] aux = resMatrizAscii(clave);
-        //    int[] matrizUnidimensional = Enumerable.Range(0, aux.GetLength(0))
-        //                    .SelectMany(i => Enumerable.Range(0, aux.GetLength(1)).Select(j => aux[i, j]))
-        //                    .ToArray();
-        //    string valoresSeparados = string.Join("", matrizUnidimensional.Select(x => ((char)x).ToString()).ToArray());
-        //    Console.WriteLine(valoresSeparados);
-
-        //    return valoresSeparados;
-        //}
-
-
-        //METODO 3
-
-        //public string cadenaEncryp(string clave)
-        //{
-        //    int[] aux = randomRowSelected(clave);
-        //    string valoresSeparados = string.Join("", aux.Select(x => ((char)x).ToString()).ToArray());
-        //    Console.WriteLine(valoresSeparados);
-
-        //    return valoresSeparados;
-        //}
-
-        //public int[] randomRowSelected(string clave)
-        //{
-        //    int[,] aux = resMatrizAscii(clave);
-        //    int randomRow = clave.Length>data.Length? clave.Length - aux.GetLength(1): clave.Length-1;
-
-        //    int[] filaUnidimensional = new int[aux.GetLength(1)];
-        //    for (int j = 0; j < aux.GetLength(1); j++)
-        //    {
-        //        filaUnidimensional[j] = aux[randomRow, j]; // Guardamos los valores de la fila seleccionada en la matriz unidimensional
-        //    }
-        //    //Imprimimos la matriz unidimensional
-        //    Console.WriteLine("Fila seleccionada:");
-        //    foreach (int valor in filaUnidimensional)
-        //    {
-        //        Console.Write(valor + " ");
-        //    }
-        //    Console.WriteLine("\n");
-        //    return filaUnidimensional;
-        //}
-        public int[,] resMatrizAscii(string clave)
+        public int[,] resMatrizUTF(string clave)
         {
             int x = alfa(clave);
             int[,] copyDataMatriz = dataMatriz;
@@ -91,11 +42,7 @@ namespace Proyecto2EDA_AlgoritmoEncriptacion.Logica
             {
                 for (int j = 0; j < copyDataMatriz.GetLength(1); j++)
                 {
-                    copyDataMatriz[i, j] = ((copyDataMatriz[i, j] * x) % 33) + 96;
-                                                            //121 - 96 = 25     -> 25 mod8 = 1      -> 1 +96 = 97
-                                                            //103 - 96 = 7      -> 7 mod 8 = 7      -> 7 + 96 = 103
-                                                            //120 - 96 = 30     -> 30 mod 8 = 6
-                                                            //donde 8 es el inverso modular de x%33
+                    copyDataMatriz[i, j] = ((copyDataMatriz[i, j] * x)) - (clave.Length*x);
                 }
             }
 
@@ -113,8 +60,6 @@ namespace Proyecto2EDA_AlgoritmoEncriptacion.Logica
             return copyDataMatriz;
 
         }
-
-
 
         public int alfa(string clave)
         {
@@ -152,16 +97,16 @@ namespace Proyecto2EDA_AlgoritmoEncriptacion.Logica
             return det;
         }
 
-        public int[,] matrizVignere(byte[] asciiBytes)
+        public int[,] matrizVignere(byte[] UTFBytes)
         {
-            int size = asciiBytes.Length;
+            int size = UTFBytes.Length;
             int[,] matriz = new int[size, size];
 
             for (int i = 0; i < size; i++)
             {
                 for (int j = 0; j < size; j++)
                 {
-                    matriz[i, j] = asciiBytes[(i + j) % size];
+                    matriz[i, j] = UTFBytes[(i + j) % size];
                 }
             }
 

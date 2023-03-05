@@ -8,121 +8,105 @@ namespace Proyecto2EDA_AlgoritmoEncriptacion.Logica
 {
     public class Decrypt
     {
-        byte[] dataEncrypt;
+        int[] dataEncrypt;
         byte[] key;
-        int[,] dataMatriz;
         int[,] keyMatriz;
-        public Decrypt(string msgEncrypt, string clave) 
+        public Decrypt(string msgEncrypt, string clave)
         {
             Console.WriteLine("DESENCRIPTANDO");
-            this.dataEncrypt = Encoding.ASCII.GetBytes(msgEncrypt);
-            this.key = Encoding.ASCII.GetBytes(clave);
-            Console.WriteLine("\n");
-            
-            Console.WriteLine("\n");
 
-        }
+            int[] intArray = new int[msgEncrypt.Length];
 
-        public string cadenaOriginal(string clave)
-        {
-            int[,] decryptedMatriz = resMatrizAscii(clave);
-            int[] decryptedArray = decryptedMatriz.Cast<int>().ToArray();
-            char[] decryptedChars = new char[decryptedArray.Length];
-
-            for (int i = 0; i < decryptedArray.Length; i++)
+            for (int i = 0; i < msgEncrypt.Length; i++)
             {
-                decryptedChars[i] = Convert.ToChar(decryptedArray[i] + 1+96);
+                intArray[i] = (int)msgEncrypt[i];
             }
 
-            string decryptedString = new string(decryptedChars);
+            dataEncrypt= (int[])intArray.Clone();
 
-            Console.WriteLine("Mensaje desencriptado: " + decryptedString);
-            return decryptedString;
+            this.key = Encoding.UTF8.GetBytes(clave);
+            
         }
 
-        //desencriptar el ascii en la función resMatrizAscii
-        public int[,] resMatrizAscii(string clave)
+        public String mensajeUsuario(String clave)
         {
-            dataMatriz = byteToMrtz(dataEncrypt, clave);
-            int x = alfaEncrypt(clave);
-            int[,] copyDataMatriz = (int[,])dataMatriz.Clone();
+            string mensajeUser = cadenaOriginal(desencriptarMensajeNUM(byteToMrtz(dataEncrypt, clave), clave));
+            byte[] utf8Bytes = Encoding.UTF8.GetBytes(mensajeUser);
+            byte[] unicodeBytes = Encoding.Convert(Encoding.UTF8, Encoding.Unicode, utf8Bytes);
+            string mensajeUNICODE = Encoding.Unicode.GetString(unicodeBytes);
+            String nuevaCadenaSinSimbolosRaros = "";
+            for (int i = 0; i < mensajeUNICODE.Length; i++)
+            {
+                if (i % 2 == 0) // Si el índice es par
+                {
+                    nuevaCadenaSinSimbolosRaros += mensajeUNICODE[i];
+                }
+            }
+            return nuevaCadenaSinSimbolosRaros;
+        }
 
+        public string cadenaOriginal(int[,] matrizOriginal)
+        {
+            string mensajeDesencriptado = "";
 
+            int[] primeraFila = new int[matrizOriginal.GetLength(1)];
+
+            for (int i = 0; i < matrizOriginal.GetLength(1); i++)
+            {
+                primeraFila[i] = matrizOriginal[0, i];
+            }
+
+            for (int i = 0; i < primeraFila.GetLength(0); i++)
+            {
+                    char c = (char)primeraFila[i];
+                    mensajeDesencriptado += c;
+            }
+            Console.WriteLine("\n\n");
+
+            Console.WriteLine(mensajeDesencriptado);
+            return mensajeDesencriptado;
+        }
+
+        public int[,] desencriptarMensajeNUM(int[,] matrizCodificada, string clave)
+        {
+            int x = alfa(clave);
+            int[,] copyDataMatriz = matrizCodificada;
+
+            // Multiplicar la matriz por el inverso de la funcion
             for (int i = 0; i < copyDataMatriz.GetLength(0); i++)
             {
                 for (int j = 0; j < copyDataMatriz.GetLength(1); j++)
                 {
-                    //PROBLEMA PARA REGRESAR LOS NUMBERS ASCII A TEXT ORIGINAL
-
-                    // Calcular el módulo inverso de x
-                    //int modInv = 0;
-                    //for (int i = 1; i < 33; i++)
-                    //{
-                    //    if (((x % 33) * (i % 33)) % 33 == 1)
-                    //    {
-                    //        modInv = i;
-                    //        break;
-                    //    }
-                    //}
-
-                    //copyDataMatriz[i, j] = ((copyDataMatriz[i, j] * x) % 33) + 96;
-                    //* InversoModular(x, 33)
-                    copyDataMatriz[i, j] = ((copyDataMatriz[i, j]-96));
+                    copyDataMatriz[i, j] = ((copyDataMatriz[i, j] + (clave.Length * x)) / x);
                 }
             }
-            Console.WriteLine("Matriz de valores entre 0 y 32 bytes\n");
-            // Imprimir la matriz resultante
+            Console.WriteLine("Matriz de numeros Originales\n");
+
             for (int i = 0; i < copyDataMatriz.GetLength(0); i++)
             {
                 for (int j = 0; j < copyDataMatriz.GetLength(1); j++)
                 {
                     Console.Write(copyDataMatriz[i, j] + " ");
                 }
-                Console.WriteLine();
+                Console.WriteLine(" ");
             }
-
             return copyDataMatriz;
         }
 
-        public static int InversoModular(int a, int m)
+        public int[,] byteToMrtz(int[] intPrueba, string clave)
         {
-            int m0 = m, t, q;
-            int x0 = 0, x1 = 1;
-
-            if (m == 1)
-                return 0;
-
-            while (a > 1)
-            {
-                q = a / m;
-                t = m;
-                m = a % m;
-                a = t;
-                t = x0;
-                x0 = x1 - q * x0;
-                x1 = t;
-            }
-
-            if (x1 < 0)
-                x1 += m0;
-
-            return x1;
-        }
-
-        public int[,] byteToMrtz(byte[] bytePrueba, string clave)
-        {
-            int size = (int)Math.Sqrt(bytePrueba.Length);
+            int size = (int)Math.Sqrt(intPrueba.Length);
             int[,] matriz = new int[size, size];
-            int x = alfaEncrypt(clave);
+            int x = alfa(clave);
 
             for (int i = 0; i < size; i++)
             {
                 for (int j = 0; j < size; j++)
                 {
                     int index = i * size + j;
-                    if (index < bytePrueba.Length)
+                    if (index < intPrueba.Length)
                     {
-                        matriz[i, j] = bytePrueba[index];
+                        matriz[i, j] = intPrueba[index];
                     }
                     else
                     {
@@ -142,14 +126,16 @@ namespace Proyecto2EDA_AlgoritmoEncriptacion.Logica
 
             return matriz;
         }
-
-
-        public int alfaEncrypt(string clave)
+        public int alfa(string clave)
         {
+            //Pasamos el arreglo de bytes a una matriz
+
             keyMatriz = matrizVignere(this.key);
+
             //Ahora lo que queremos hacer es hallar el valor absoluto del determinante de la matriz de key
             int absDetMatrz = Math.Abs(DeterminanteGauss1(keyMatriz));
             int alfa = absDetMatrz + clave.Length;
+            Console.WriteLine(alfa);
             return Math.Abs(alfa);
         }
 
@@ -188,18 +174,21 @@ namespace Proyecto2EDA_AlgoritmoEncriptacion.Logica
                     matriz[i, j] = asciiBytes[(i + j) % size];
                 }
             }
+            return matriz;
+        }
 
-            //Console.WriteLine("Matrizes de Vigenere");
+        public int[,] matrizVignere(int[] utfBytes)
+        {
+            int size = utfBytes.Length;
+            int[,] matriz = new int[size, size];
 
-            //// Imprimir matriz 
-            //for (int i = 0; i < size; i++)
-            //{
-            //    for (int j = 0; j < size; j++)
-            //    {
-            //        Console.Write(matriz[i, j] + " ");
-            //    }
-            //    Console.WriteLine();
-            //}
+            for (int i = 0; i < size; i++)
+            {
+                for (int j = 0; j < size; j++)
+                {
+                    matriz[i, j] = utfBytes[(i + j) % size];
+                }
+            }
             return matriz;
         }
     }

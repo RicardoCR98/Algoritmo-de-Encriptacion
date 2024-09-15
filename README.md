@@ -74,3 +74,16 @@ Las contribuciones son bienvenidas. Si deseas contribuir, por favor sigue estos 
 3. Realiza tus cambios y haz un commit (`git commit -am 'Añadir nueva característica'`).
 4. Haz push de tu rama (`git push origin feature/nueva-caracteristica`).
 5. Abre un Pull Request.
+
+## Capturas de pantalla 
+
+Para encriptar un archivo, simplemente se introduce una clave y se selecciona el archivo deseado:
+
+![image](https://github.com/user-attachments/assets/e8376b68-7a81-40dc-860a-459f11b3a589)
+
+
+Los archivos encriptados pueden ser guardados y compartidos con otras personas, quienes podrán desencriptarlos únicamente utilizando la clave correcta:
+
+![image](https://github.com/user-attachments/assets/f35486d2-9026-4d8b-a5e9-b11deb594ea8)
+
+
